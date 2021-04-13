@@ -9,7 +9,6 @@ class ExpandTest < Minitest::Test
     assert_equal "144t^2-1032t+1849", expand("(-12t+43)^2")
     assert_equal "r^203", expand("(r+0)^203")
     assert_equal "x^2+2x+1", expand("(-x-1)^2")
-
   end
 end
 
@@ -37,12 +36,12 @@ def expand(expresion)
     exp_a << "^#{(n-k)}" if (n-k) > 1
     exp_na = (na ** (n-k))
 
-    nk_exp_b = (nk * exp_na * (b ** k))
-    nk_exp_b = "+#{nk_exp_b}" if nk_exp_b.positive? && k != 0
-    nk_exp_b = "" if k == 0 && nk_exp_b.to_i <= 1
+    nk_exp_a_exp_b = (nk * exp_na * (b ** k))
+    nk_exp_a_exp_b = "+#{nk_exp_a_exp_b}" if nk_exp_a_exp_b.positive? && k != 0
+    nk_exp_a_exp_b = "" if k == 0 && nk_exp_a_exp_b.to_i <= 1
 
-    next if nk_exp_b == 0
+    next if nk_exp_a_exp_b == 0
 
-    memo << "#{nk_exp_b}#{exp_a}"
+    memo << "#{nk_exp_a_exp_b}#{exp_a}"
   end
 end
