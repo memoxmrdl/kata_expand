@@ -14,6 +14,7 @@ class ExpandTest < Minitest::Test
 end
 
 def expand(expression)
+  # Returns a, v, b and n split of (av + b)^n using expression regular
   a, v, b, n = expression = expression.split(/\((-?\d*)(\w)([-+]?\d?.)\)\^(\d*)/)[1..-1]
 
   n == "0" && (return "1")
@@ -22,6 +23,8 @@ def expand(expression)
   a == "-" && (a = -1)
   a, b, n = a.to_i, b.to_i, n.to_i
 
+  # This is based on the following link:
+  # https://en.wikipedia.org/wiki/Binomial_theorem#Newton's_generalized_binomial_theorem
   (0..n).each_with_object("") do |k, memo|
     nf = (1..n).inject(:*)
     knkf = (1..k).inject(:*).to_i * (1..(n - k)).inject(:*).to_i
