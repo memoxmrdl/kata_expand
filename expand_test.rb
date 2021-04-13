@@ -14,25 +14,23 @@ class ExpandTest < Minitest::Test
 end
 
 def expand(expresion)
-  expresion = expresion.split(/(\()([-+]?(\d*?.))([-+]?(\d?.))(\))(\^)([0-9]*)/)
-  a, b, n = expresion[2], expresion[4].to_i, expresion[-1].to_i
+  a, v, b, n = expresion = expresion.split(/\((-?\d*)(\w)([-+]?\d?.)\)\^(\d*)/)[1..-1]
 
-  n.zero? && (return "1")
+  n == "0" && (return "1")
+
+  a.empty? && (a = 1)
+  a == "-" && (a = -1)
+  a, b, n = a.to_i, b.to_i, n.to_i
 
   (0..n).each_with_object("") do |k, memo|
     nf = (1..n).inject(:*)
     knkf = (1..k).inject(:*).to_i * (1..(n - k)).inject(:*).to_i
     nk = knkf.zero? ? 1 : nf / knkf
 
-    na, ca = a.split(/([-+]?\d*)?([-+]?.)/)[1..-1]
-    na.empty? && (na = 1)
-    na == "-" && (na = -1)
-    na = na.to_i
-
-    (n-k) > 0 && (exp_a = "#{ca}")
+    (n-k) > 0 && (exp_a = "#{v}")
     (n-k) > 1 && (exp_a << "^#{(n-k)}")
 
-    nk_exp_a_exp_b = (nk * (na ** (n-k)) * (b ** k))
+    nk_exp_a_exp_b = (nk * (a ** (n-k)) * (b ** k))
     nk_exp_a_exp_b.zero? && next
 
     if nk_exp_a_exp_b.positive? && k != 0
