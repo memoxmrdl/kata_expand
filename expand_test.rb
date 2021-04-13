@@ -39,6 +39,7 @@ def expand(expresion)
 
     nk_exp_a_exp_b = (nk * exp_na * (b ** k))
     nk_exp_a_exp_b = "+#{nk_exp_a_exp_b}" if nk_exp_a_exp_b.positive? && k != 0
+    nk_exp_a_exp_b = "-" if nk_exp_a_exp_b.to_s == "-1" && k == 0
     nk_exp_a_exp_b = "" if nk_exp_a_exp_b == 1
 
     next if nk_exp_a_exp_b == 0
