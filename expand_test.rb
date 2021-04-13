@@ -35,14 +35,18 @@ def expand(expresion)
 
     exp_a = "#{ca}" if (n-k) > 0
     exp_a << "^#{(n-k)}" if (n-k) > 1
-    exp_na = (na ** (n-k))
 
-    nk_exp_a_exp_b = (nk * exp_na * (b ** k))
-    nk_exp_a_exp_b = "+#{nk_exp_a_exp_b}" if nk_exp_a_exp_b.positive? && k != 0
-    nk_exp_a_exp_b = "-" if nk_exp_a_exp_b.to_s == "-1" && k == 0
-    nk_exp_a_exp_b = "" if nk_exp_a_exp_b == 1
+    nk_exp_a_exp_b = (nk * (na ** (n-k)) * (b ** k))
 
-    next if nk_exp_a_exp_b == 0
+    if nk_exp_a_exp_b.positive? && k != 0
+      nk_exp_a_exp_b = "+#{nk_exp_a_exp_b}"
+    elsif nk_exp_a_exp_b.to_s == "-1" && k == 0
+      nk_exp_a_exp_b = "-"
+    elsif nk_exp_a_exp_b == 1
+      nk_exp_a_exp_b = ""
+    elsif nk_exp_a_exp_b == 0
+      next
+    end
 
     memo << "#{nk_exp_a_exp_b}#{exp_a}"
   end
