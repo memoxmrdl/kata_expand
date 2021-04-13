@@ -17,35 +17,30 @@ def expand(expresion)
   expresion = expresion.split(/(\()([-+]?(\d*?.))([-+]?(\d?.))(\))(\^)([0-9]*)/)
   a, b, n = expresion[2], expresion[4].to_i, expresion[-1].to_i
 
-  return "1" if n == 0
+  n.zero? && (return "1")
 
   (0..n).each_with_object("") do |k, memo|
-    nk = begin
-      ((1..n).inject(:*).to_i /
-        ((1..k).inject(:*).to_i * (1..(n - k)).inject(:*).to_i
-      )).to_i
-    rescue ZeroDivisionError
-      1
-    end
+    nf = (1..n).inject(:*)
+    knkf = (1..k).inject(:*).to_i * (1..(n - k)).inject(:*).to_i
+    nk = knkf.zero? ? 1 : nf / knkf
 
     na, ca = a.split(/([-+]?\d*)?([-+]?.)/)[1..-1]
-    na = 1 if na.empty?
-    na = -1 if na == "-"
+    na.empty? && (na = 1)
+    na == "-" && (na = -1)
     na = na.to_i
 
-    exp_a = "#{ca}" if (n-k) > 0
-    exp_a << "^#{(n-k)}" if (n-k) > 1
+    (n-k) > 0 && (exp_a = "#{ca}")
+    (n-k) > 1 && (exp_a << "^#{(n-k)}")
 
     nk_exp_a_exp_b = (nk * (na ** (n-k)) * (b ** k))
+    nk_exp_a_exp_b.zero? && next
 
     if nk_exp_a_exp_b.positive? && k != 0
       nk_exp_a_exp_b = "+#{nk_exp_a_exp_b}"
-    elsif nk_exp_a_exp_b.to_s == "-1" && k == 0
+    elsif nk_exp_a_exp_b.to_s == "-1" && k.zero?
       nk_exp_a_exp_b = "-"
     elsif nk_exp_a_exp_b == 1
       nk_exp_a_exp_b = ""
-    elsif nk_exp_a_exp_b == 0
-      next
     end
 
     memo << "#{nk_exp_a_exp_b}#{exp_a}"
