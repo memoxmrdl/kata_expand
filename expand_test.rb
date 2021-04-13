@@ -17,9 +17,9 @@ def expand(expresion)
   expresion = expresion.split(/(\()([-+]?(\d*?.))([-+]?(\d?.))(\))(\^)([0-9]*)/)
   a, b, n = expresion[2], expresion[4].to_i, expresion[-1].to_i
 
-  (0..n).each_with_object("") do |k, memo|
-    memo << "1" if n == 0
+  return "1" if n == 0
 
+  (0..n).each_with_object("") do |k, memo|
     nk = begin
       ((1..n).inject(:*).to_i /
         ((1..k).inject(:*).to_i * (1..(n - k)).inject(:*).to_i
