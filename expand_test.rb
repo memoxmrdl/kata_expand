@@ -13,8 +13,8 @@ class ExpandTest < Minitest::Test
   end
 end
 
-def expand(expresion)
-  a, v, b, n = expresion = expresion.split(/\((-?\d*)(\w)([-+]?\d?.)\)\^(\d*)/)[1..-1]
+def expand(expression)
+  a, v, b, n = expression = expression.split(/\((-?\d*)(\w)([-+]?\d?.)\)\^(\d*)/)[1..-1]
 
   n == "0" && (return "1")
 
